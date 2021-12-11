@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -27,11 +28,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+#Teste para ver se funcionará o em produção e no desenvolvimento
+app_livereload = ''
+middleware_livereload = ''
+if DEBUG == True:
+    app_livereload = 'livereload'
+    middleware_livereload = 'livereload.middleware.LiveReloadScript'
+    print(app_livereload)
+
 
 # Application definition
 
 INSTALLED_APPS = [
     'clock',
+    'livereload',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'livereload.middleware.LiveReloadScript'
 ]
 
 ROOT_URLCONF = 'sitepomodoro.urls'
@@ -56,7 +67,7 @@ ROOT_URLCONF = 'sitepomodoro.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,4 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS =  [
+    os.path.join(BASE_DIR, 'sitepomodoro/static')
+]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

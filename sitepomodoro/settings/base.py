@@ -28,20 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-#Teste para ver se funcionará o em produção e no desenvolvimento
-app_livereload = ''
-middleware_livereload = ''
-if DEBUG == True:
-    app_livereload = 'livereload'
-    middleware_livereload = 'livereload.middleware.LiveReloadScript'
-    print(app_livereload)
-
-
 # Application definition
 
 INSTALLED_APPS = [
     'clock',
-    app_livereload,
+    #'livereload',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    middleware_livereload,
+    #'livereload.middleware.LiveReloadScript'
 ]
 
 ROOT_URLCONF = 'sitepomodoro.urls'

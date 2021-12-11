@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="flex justify-center items-center h-screen w-screen">
+    <div class="items-start block">
+        <div id="buttons-menu" class="mb-1 flex justify-between">
+            <a href="" class="bg-red-700 text-white rounded p-1">Pomológio</a>
+            <a href="" class="bg-red-700 text-white rounded p-1">Configurações</a>
+            <a href="" class="bg-red-700 text-white rounded py-1 px-8">Perfil</a>
+        </div>
+        <div id="buttons-pomodoro" class="border-4 px-4 pb-16 pt-4 bg-red-500">
+            <div class="flex items-start">
+                <button onclick="" class="border-2 mr-2 text-white rounded">Pomodoro</button>
+                <button onclick="" class="border-2 text-white rounded">Descanso curto</button>
+                <button onclick="" class="border-2 ml-2 text-white rounded">Descanso longo</button>
+            </div>
+            <div class="flex justify-center items-center">
+                <p class="mt-16 text-6xl text-white">25:00</p>
+            </div>
+            <div class="flex justify-center items center">
+                <button onclick="" class="mt-8 border-2 rounded py-1 px-4 text-white">Iniciar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+</script>
+
+{% endblock %}

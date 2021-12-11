@@ -1,0 +1,1 @@
+web: gunicorn sitepomodoro.wsgi --log-file -

@@ -5,15 +5,18 @@
 <div class="flex justify-center items-center h-screen w-screen">
     <div class="items-start block">
         <div id="buttons-menu" class="mb-1 flex justify-between">
-            <a href="" class="bg-red-700 text-white font-bold rounded p-1">Pomológio</a>
-            <a href="" class="bg-red-700 text-white font-bold rounded p-1">Configurações</a>
+            <a href="{% url 'index' %}" class="bg-red-700 text-white font-bold rounded p-1">Pomológio</a>
+            <button onclick="showConfig()" class="bg-red-700 text-white font-bold rounded p-1">Configurações</button>
             <a href="" class="bg-red-700 text-white font-bold rounded py-1 px-8">Perfil</a>
         </div>
         <div id="buttons-pomodoro" class="border-4 px-4 pb-16 pt-4 bg-red-500">
             <div class="flex items-start">
-                <button onclick="pomodoroFunc()" class="border-2 mr-2 text-white font-bold rounded p-1">Pomodoro</button>
-                <button onclick="shortBreakFunc()" class="border-2 text-white font-bold rounded p-1">Descanso curto</button>
-                <button onclick="longBreakFunc()" class="border-2 ml-2 text-white font-bold rounded p-1">Descanso longo</button>
+                <button onclick="pomodoroFunc()"
+                    class="border-2 mr-2 text-white font-bold rounded p-1">Pomodoro</button>
+                <button onclick="shortBreakFunc()" class="border-2 text-white font-bold rounded p-1">Descanso
+                    curto</button>
+                <button onclick="longBreakFunc()" class="border-2 ml-2 text-white font-bold rounded p-1">Descanso
+                    longo</button>
             </div>
             <div class="flex justify-center items-center">
                 <span id="clock-minutes" class="mt-16 text-6xl text-white font-bold">00</span>
@@ -25,6 +28,52 @@
                     class="mt-8 border-2 rounded py-1 px-4 text-white font-bold">Iniciar</button>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="painel-config" class="border-8 rounded bg-gray-500 mx-96 pb-96">
+    <div class="flex justify-between border-b-2 border-gray-900 mx-4">
+        <div class="flex">
+            <span class="pt-4 font-bold">Configurações de tempo</span>
+        </div>
+        <div>
+            <img class="h-10 pt-4" src="{% static 'images/xbuttom.png' %}" alt="Xbuttom">
+        </div>
+    </div>
+    <div class="mx-4 mt-4">
+        <p>Tempo(Minutos)</p> 
+        <div class="mt-1 grid grid-cols-3 gap-4 border-b-2 border-gray-900 pb-2">
+            <div>
+                <p class="flex justify-center font-bold">Pomodoro</p>
+                <div class="flex justify-center">
+                    <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-4/5"></input type="number">
+                </div>
+            </div>
+            <div>
+                <p class="flex justify-center font-bold">Descanso curto</p>
+                <div class="flex justify-center">
+                    <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-4/5"></input>
+                </div>
+            </div>
+            <div>
+                <p class="flex justify-center font-bold">Descanso longo</p>
+                <div class="flex justify-center">
+                    <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-4/5"></input>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mx-4 mt-4 flex justify-between border-b-2 border-gray-900 pb-2">
+        <span>Intervalo para descanso longo</span> 
+        <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-2/6"></input>
+    </div>
+    <div class="mx-4 mt-4 flex justify-between border-b-2 border-gray-900 pb-2">
+        <span>Som do aviso</span>
+        <option>Som</option>
+    </div>
+    <div class="mx-4 mt-4 flex justify-end pb-2">
+        <button onclick="hiddenConfig()">Ok</button>
     </div>
 </div>
 
@@ -45,24 +94,24 @@
         if (minutes == 0 && seconds == 0) {
             isTiking = false;
             switch (activeType) {
-            case pomodoro:
-                shortBreakFunc();
-                break;
-            case shortBreak:
-                pomodoroFunc();
-                break;
-            case longBreak:
-                pomodoroFunc();
-                break;
+                case pomodoro:
+                    shortBreakFunc();
+                    break;
+                case shortBreak:
+                    pomodoroFunc();
+                    break;
+                case longBreak:
+                    pomodoroFunc();
+                    break;
             }
         }
     }
 
-    function defineTime(){
+    function defineTime() {
         defineButtonString();
         switch (activeType) {
             case pomodoro:
-            minutesElement.textContent = "25";
+                minutesElement.textContent = "25";
                 break;
             case shortBreak:
                 minutesElement.textContent = "05";
@@ -74,7 +123,7 @@
         secondsElement.textContent = "00";
     }
 
-    function defineButtonString(){
+    function defineButtonString() {
         document.getElementById("start-button").textContent = isTiking ? "Pausar" : "Iniciar";
     }
 
@@ -82,7 +131,7 @@
     const shortBreak = Symbol("shortBreak");
     const longBreak = Symbol("longBreak");
     var activeType = pomodoro;
-    
+
     async function startCouting() {
         isTiking = !isTiking;
         defineButtonString();
@@ -95,24 +144,24 @@
 
             couting(minutes, seconds, minutesElement, secondsElement);
             console.log("Entrou")
-            await new Promise(r => setTimeout(r, 1000));   
+            await new Promise(r => setTimeout(r, 1000));
         }
-        
+
     }
 
-    function disableButton(){
+    function disableButton() {
         document.getElementById('start-button').disabled = true;
     }
 
-    async function enableButton(){
-        await new Promise(r => setTimeout(r, 1000)); 
+    async function enableButton() {
+        await new Promise(r => setTimeout(r, 1000));
         document.getElementById('start-button').disabled = false;
     }
 
     function pomodoroFunc() {
         isTiking = false;
         activeType = pomodoro
-        defineTime();    
+        defineTime();
         document.getElementById("buttons-pomodoro").className = "border-4 px-4 pb-16 pt-4 bg-red-500";
     }
 
@@ -128,6 +177,15 @@
         activeType = longBreak
         defineTime();
         document.getElementById("buttons-pomodoro").className = "border-4 px-4 pb-16 pt-4 bg-blue-800";
+    }
+
+    function showConfig() {
+        document.getElementById("painel-config").hidden = false;
+    }
+
+    
+    function hiddenConfig() {
+        document.getElementById("painel-config").hidden = true;
     }
 </script>
 

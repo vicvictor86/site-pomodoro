@@ -26,27 +26,32 @@
             <div class="flex justify-center items center">
                 <button id="start-button" onclick="disableButton(); startCouting(); enableButton();"
                     class="mt-8 border-2 rounded py-1 px-4 text-white font-bold">Iniciar</button>
+                <button id="jump-button" onclick="nextStage()"
+                    class="mt-8 border-2 rounded py-1 px-4 text-white font-bold ml-2">Pular</button>
             </div>
         </div>
     </div>
 </div>
 
-<div id="painel-config" class="border-8 rounded bg-gray-500 mx-96 pb-96">
+<div id="painel-config" class="border-8 rounded bg-gray-500 mx-96 pb-96" hidden>
     <div class="flex justify-between border-b-2 border-gray-900 mx-4">
         <div class="flex">
             <span class="pt-4 font-bold">Configurações de tempo</span>
         </div>
         <div>
-            <img class="h-10 pt-4" src="{% static 'images/xbuttom.png' %}" alt="Xbuttom">
+            <button onclick="hiddenConfig()">
+                <img class="h-10 pt-4" src="{% static 'images/xbuttom.png' %}" alt="Xbuttom">
+            </button>
         </div>
     </div>
     <div class="mx-4 mt-4">
-        <p>Tempo(Minutos)</p> 
+        <p>Tempo(Minutos)</p>
         <div class="mt-1 grid grid-cols-3 gap-4 border-b-2 border-gray-900 pb-2">
             <div>
                 <p class="flex justify-center font-bold">Pomodoro</p>
                 <div class="flex justify-center">
-                    <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-4/5"></input type="number">
+                    <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-4/5"></input
+                        type="number">
                 </div>
             </div>
             <div>
@@ -65,12 +70,16 @@
     </div>
 
     <div class="mx-4 mt-4 flex justify-between border-b-2 border-gray-900 pb-2">
-        <span>Intervalo para descanso longo</span> 
+        <span>Intervalo para descanso longo</span>
         <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-2/6"></input>
     </div>
     <div class="mx-4 mt-4 flex justify-between border-b-2 border-gray-900 pb-2">
-        <span>Som do aviso</span>
-        <option>Som</option>
+        <label>Som do aviso</label>
+        <select id="sound" class="bg-gray-400">
+            <option value="digital">Digital</option>
+            <option value="clock">Relógio</option>
+            <option value="farm">Fazenda</option>
+        </select>
     </div>
     <div class="mx-4 mt-4 flex justify-end pb-2">
         <button onclick="hiddenConfig()">Ok</button>
@@ -81,29 +90,42 @@
     var isTiking = false;
     var minutesElement = document.getElementById("clock-minutes");
     var secondsElement = document.getElementById("clock-seconds");
+    var pomodoroCount = 0;
+
+    function nextStage() {
+        switch (activeType) {
+            case pomodoro:
+                if(pomodoroCount != 0 && pomodoroCount % 4 == 0){
+                    longBreakFunc();
+                    break;
+                }
+                shortBreakFunc();
+                break;
+            case shortBreak:
+                pomodoroFunc();
+                break;
+            case longBreak:
+                pomodoroFunc();
+                break;
+        }
+    }
 
     function couting(minutes, seconds, minutesElement, secondsElement) {
-        seconds -= 1;
+        seconds--;
         if (seconds < 0) {
-            seconds = 59
-            minutes -= 1;
+            seconds = 59;
+            minutes--;
         }
 
-        minutesElement.textContent = minutes.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })
+        minutesElement.textContent = minutes.toLocaleString('pt-BR', { minimumIntegerDigits: 2 });
         secondsElement.textContent = seconds.toLocaleString('pt-BR', { minimumIntegerDigits: 2 });
+
         if (minutes == 0 && seconds == 0) {
-            isTiking = false;
-            switch (activeType) {
-                case pomodoro:
-                    shortBreakFunc();
-                    break;
-                case shortBreak:
-                    pomodoroFunc();
-                    break;
-                case longBreak:
-                    pomodoroFunc();
-                    break;
+            if(activeType == pomodoro){
+                pomodoroCount++;
             }
+            isTiking = false;
+            nextStage();
         }
     }
 
@@ -183,7 +205,6 @@
         document.getElementById("painel-config").hidden = false;
     }
 
-    
     function hiddenConfig() {
         document.getElementById("painel-config").hidden = true;
     }

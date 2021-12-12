@@ -23,16 +23,17 @@
                 </div>
                 <div>
                     <label class="block text-gray-800 text-2xl text-center" for="file">Nova senha:</label>
-                    <input class="rounded mb-2 p-2" type="text" class="p-1 text-center" placeholder="Caso não queira alterar"
+                    <input class="rounded p-2" type="password" class="p-1 text-center" placeholder="Caso não queira alterar"
                         name="new_password"></input>
                 </div>
                 <div>
                     <label class="block text-gray-800 text-2xl text-center" for="file">Confirmar senha:</label>
-                    <input class="rounded p-2" type="text" class="p-1 text-center" placeholder="deixe em branco" name="confirm_new_password"></input>
+                    <input class="rounded p-2" type="password" class="p-1 text-center" placeholder="deixe em branco" name="confirm_new_password"></input>
                 </div>
             </div>
             <div class="flex justify-center pt-2 pb-4 bg-gray-300">
                 <button class="bg-blue-800 flex justify-center align-items text-white rounded-md p-2" type="submit">Alterar informações</button>
+                <a class="bg-blue-800 flex justify-center align-items text-white rounded-md p-2 ml-4 mr-6" href="{% url 'index' %}">Página principal</a>
             </div>
         </form>
     </div>

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="pt-48 pb-48">
+    <div class="container px-3 mx-auto flex flex-wrap flex-row items-center">
+        <div class="flex md:w-full h-96 justify-center items-center md:text-left ">
+            <form class="flex justify-center items-center h-full rounded border-gray-600 border-8 px-8 py-64" action="{% url 'create_user' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+
+                    <div class="font-bold m-4">
+                        Bem vindo ao Pomológio, vamos criar sua conta.
+                    </div>
+
+                    <div class="flex justify-center items-center m-4">
+                        <img class="h-10" src="{% static 'images/icon.png' %}" alt="Icone do site">
+                    </div>
+                    <div class="w-full border-b-2">
+                        <label class="text-gray-800" for="name">Nome completo:</label>
+                        <input type="text" class="w-72" name="name" placeholder="Ex.:Guilherme Lima" required>
+                    </div>
+                    <div class="w-full border-b-2">
+                        <label class="text-gray-800" for="email">Email:</label>
+                        <input type="email" class="w-72" name="email" placeholder="Ex.: victor@outlook.com"
+                            required>
+                    </div>
+                    <div class="w-full border-b-2">
+                        <label class="text-gray-800" for="password">Senha:</label>
+                        <input  type="password" class="w-72" name="password" placeholder="Digite sua senha"
+                            required>
+                    </div>
+                    <div class="w-full border-b-2">
+                        <label class="text-gray-800" for="password2">Confirmação de senha:</label>
+                        <input  type="password" class="w-64" name="password2"
+                            placeholder="Mais uma vez" required>
+                    </div>
+                    <div class="text-gray-800 flex justify-center align-items mt-8">
+                        <button class="bg-gray-800 flex justify-center align-items text-white rounded-md p-4" type="submit">Crie sua conta</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

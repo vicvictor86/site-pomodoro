@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="pt-48 pb-48">
+    <div class="container px-3 mx-auto flex flex-wrap flex-row items-center">
+        <div class="flex md:w-full h-96 justify-center items-center md:text-left ">
+            <form class="flex justify-center items-center h-full rounded border-gray-600 border-8 px-8 py-64" action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="font-bold m-4">
+                        Bem vindo ao Pomológio. Entre em sua conta
+                    </div>
+
+                    <div class="flex justify-center items-center m-4">
+                        <img class="h-10" src="{% static 'images/icon.png' %}" alt="Icone do site">
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-12">
+                            <label class="text-gray-800" for="email">Email:</label>
+                            <input type="text" id="email" class="w-full border-b-2" name="email"
+                                placeholder="Entre com o email cadastrado">
+                        </div>
+                        <div class="col-12 col-lg-12">
+                            <label class="text-gray-800" for="password_user">Senha:</label>
+                            <input id="senha" type="password" class="w-full border-b-2" name="password_user"
+                                placeholder="Digite aqui sua senha">
+                        </div>
+                        <div class="flex justify-center items-center mt-8">
+                            <button class="bg-gray-800 flex justify-center align-items text-white rounded-md p-4" type="submit">Acessar sua conta</button>
+                        </div>
+                        <div class="mt-8 text-center">
+                            <span>Ainda não tem conta?</span>
+                            <button type="button" class="text-blue-700" onclick="exibirCriarConta()">Clique aqui</button>
+                        </div>
+                        <div class="mt-6">
+                            
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function exibirCriarConta() {
+        location.href = "{% url 'create_user' %}";
+    }
+</script>
+
+{% endblock %}

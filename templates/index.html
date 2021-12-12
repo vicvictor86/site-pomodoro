@@ -2,12 +2,21 @@
 {% load static %}
 {% block content %}
 
+{% if not user.is_authenticated %}
+    <script>
+        location.href = "{% url 'login' %}";
+    </script>
+{% endif %}
+
+<script src="{% static 'js/index.js' %}"></script>
+
 <div class="flex justify-center items-center h-screen w-screen">
     <div class="items-start block">
         <div id="buttons-menu" class="mb-1 flex justify-between">
             <a href="{% url 'index' %}" class="bg-red-700 text-white font-bold rounded p-1">Pomológio</a>
-            <button onclick="showConfig()" class="bg-red-700 text-white font-bold rounded p-1">Configurações</button>
-            <a href="" class="bg-red-700 text-white font-bold rounded py-1 px-8">Perfil</a>
+            <button onclick="showConfig(); " class="bg-red-700 text-white font-bold rounded p-1">Configurações</button>
+            <a href="{% url 'perfil'%}" class="bg-red-700 text-white font-bold rounded py-1 px-6">Perfil</a>
+            <a href="{% url 'logout'%}" class="bg-red-700 text-white font-bold rounded py-1 px-6">Sair</a>
         </div>
         <div id="buttons-pomodoro" class="border-4 px-4 pb-16 pt-4 bg-red-500">
             <div class="flex items-start">
@@ -19,72 +28,83 @@
                     longo</button>
             </div>
             <div class="flex justify-center items-center">
-                <span id="clock-minutes" class="mt-16 text-6xl text-white font-bold">00</span>
+                <span id="clock-minutes" class="mt-16 text-6xl text-white font-bold">{{user.config_perfil.time_pomodoro}}</span>
                 <span class="mt-16 text-6xl text-white font-bold">:</span>
-                <span id="clock-seconds" class="mt-16 text-6xl text-white font-bold">05</span>
+                <span id="clock-seconds" class="mt-16 text-6xl text-white font-bold">00</span>
             </div>
             <div class="flex justify-center items center">
                 <button id="start-button" onclick="disableButton(); startCouting(); enableButton();"
                     class="mt-8 border-2 rounded py-1 px-4 text-white font-bold">Iniciar</button>
-                <button id="jump-button" onclick="nextStage()"
+                <button id="jump-button" onclick="nextStage(); stopAudio();"
                     class="mt-8 border-2 rounded py-1 px-4 text-white font-bold ml-2">Pular</button>
             </div>
         </div>
     </div>
 </div>
 
-<div id="painel-config" class="border-8 rounded bg-gray-500 mx-96 pb-96" hidden>
-    <div class="flex justify-between border-b-2 border-gray-900 mx-4">
-        <div class="flex">
-            <span class="pt-4 font-bold">Configurações de tempo</span>
-        </div>
-        <div>
-            <button onclick="hiddenConfig()">
-                <img class="h-10 pt-4" src="{% static 'images/xbuttom.png' %}" alt="Xbuttom">
-            </button>
-        </div>
-    </div>
-    <div class="mx-4 mt-4">
-        <p>Tempo(Minutos)</p>
-        <div class="mt-1 grid grid-cols-3 gap-4 border-b-2 border-gray-900 pb-2">
-            <div>
-                <p class="flex justify-center font-bold">Pomodoro</p>
-                <div class="flex justify-center">
-                    <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-4/5"></input
-                        type="number">
+{% if user.is_authenticated %}
+    <div id="painel-config" class="border-8 rounded bg-gray-500 mx-96 pb-96" hidden>
+        <form action="{% url 'confirm_configurations' user.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="flex justify-between border-b-2 border-gray-900 mx-4">
+                <div class="flex">
+                    <span class="pt-4 font-bold">Configurações de tempo</span>
                 </div>
-            </div>
-            <div>
-                <p class="flex justify-center font-bold">Descanso curto</p>
-                <div class="flex justify-center">
-                    <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-4/5"></input>
-                </div>
-            </div>
-            <div>
-                <p class="flex justify-center font-bold">Descanso longo</p>
-                <div class="flex justify-center">
-                    <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-4/5"></input>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="mx-4 mt-4 flex justify-between border-b-2 border-gray-900 pb-2">
-        <span>Intervalo para descanso longo</span>
-        <input type="number" min="1" class="flex justify-center text-center bg-gray-400 w-2/6"></input>
+                <div>
+                    <button type="submit" onclick="hiddenConfig()">
+                        <img class="h-10 pt-4" src="{% static 'images/xbuttom.png' %}" alt="Xbuttom">
+                    </button>
+                </div>
+            </div>
+            <div class="mx-4 mt-4">
+                <p>Tempo(Minutos)</p>
+                <div class="mt-1 grid grid-cols-3 gap-4 border-b-2 border-gray-900 pb-2">
+                    <div>
+                        <p class="flex justify-center font-bold">Pomodoro</p>
+                        <div class="flex justify-center">
+                            <input type="number" min="1" name="time_pomodoro" value="{{user.config_perfil.time_pomodoro}}"
+                                class="flex justify-center text-center bg-gray-400 w-4/5"></input type="number">
+                        </div>
+                    </div>
+                    <div>
+                        <p class="flex justify-center font-bold">Descanso curto</p>
+                        <div class="flex justify-center">
+                            <input type="number" min="1" name="time_short_break" value="{{user.config_perfil.time_short_break}}"
+                                class="flex justify-center text-center bg-gray-400 w-4/5"></input>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="flex justify-center font-bold">Descanso longo</p>
+                        <div class="flex justify-center">
+                            <input type="number" min="1" name="time_long_break" value="{{user.config_perfil.time_long_break}}"
+                                class="flex justify-center text-center bg-gray-400 w-4/5"></input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mx-4 mt-4 flex justify-between border-b-2 border-gray-900 pb-2">
+                <span>Intervalo para descanso longo</span>
+                <input type="number" min="1" name="quantity_long_break" value="{{user.config_perfil.quantity_long_break}}"
+                    class="flex justify-center text-center bg-gray-400 w-2/6"></input>
+            </div>
+            <div class="mx-4 mt-4 flex justify-between border-b-2 border-gray-900 pb-2">
+                <label>Som do aviso</label>
+                <select id="sound" name="type_sound" class="bg-gray-400">
+                    <option id="digital" value="digital">Digital</option>
+                    <option id="clock" value="clock">Relógio</option>
+                    <option id="farm" value="farm">Fazenda</option>
+                    <script>defineSoundType("{{user.config_perfil.type_sound}}")</script>
+                </select>
+                <audio id="audio-manager" type="audio/mp3"></audio>
+            </div>
+            <div class="mx-4 mt-4 flex justify-end pb-2">
+                <button type="submit" class="bg-gray-600 mr-2 font-bold rounded py-1 px-2" onclick="hiddenConfig()">Ok</button>
+            </div>
+        </form>
     </div>
-    <div class="mx-4 mt-4 flex justify-between border-b-2 border-gray-900 pb-2">
-        <label>Som do aviso</label>
-        <select id="sound" class="bg-gray-400">
-            <option value="digital">Digital</option>
-            <option value="clock">Relógio</option>
-            <option value="farm">Fazenda</option>
-        </select>
-    </div>
-    <div class="mx-4 mt-4 flex justify-end pb-2">
-        <button onclick="hiddenConfig()">Ok</button>
-    </div>
-</div>
+{% endif %}
 
 <script>
     var isTiking = false;
@@ -92,10 +112,35 @@
     var secondsElement = document.getElementById("clock-seconds");
     var pomodoroCount = 0;
 
+    async function playAudio() {
+        var select = document.getElementById("sound");
+        var value = select.options[select.selectedIndex].value;
+
+        var audioManager = document.getElementById("audio-manager");
+        if (value == "digital") {
+            audioManager.src = "{% static 'audios/digital_sound.mp3' %}";
+        }
+        else if (value == "clock") {
+            audioManager.src = "{% static 'audios/cuckko_sound.mp3' %}";
+        }
+        else if (value == "farm") {
+            audioManager.src = "{% static 'audios/farm_sound.mp3' %}";
+        }
+        audioManager.play();
+        await new Promise(r => setTimeout(r, 4000));
+        stopAudio();
+    }
+
+    function stopAudio() {
+        var audioManager = document.getElementById("audio-manager");
+        audioManager.pause();
+        audioManager.currentTime = 0;
+    }
+
     function nextStage() {
         switch (activeType) {
             case pomodoro:
-                if(pomodoroCount != 0 && pomodoroCount % 4 == 0){
+                if (pomodoroCount != 0 && pomodoroCount % 4 == 0) {
                     longBreakFunc();
                     break;
                 }
@@ -111,6 +156,7 @@
     }
 
     function couting(minutes, seconds, minutesElement, secondsElement) {
+        stopAudio();
         seconds--;
         if (seconds < 0) {
             seconds = 59;
@@ -121,9 +167,10 @@
         secondsElement.textContent = seconds.toLocaleString('pt-BR', { minimumIntegerDigits: 2 });
 
         if (minutes == 0 && seconds == 0) {
-            if(activeType == pomodoro){
+            if (activeType == pomodoro) {
                 pomodoroCount++;
             }
+            playAudio();
             isTiking = false;
             nextStage();
         }
@@ -133,13 +180,13 @@
         defineButtonString();
         switch (activeType) {
             case pomodoro:
-                minutesElement.textContent = "25";
+                minutesElement.textContent = "{{user.config_perfil.time_pomodoro}}";
                 break;
             case shortBreak:
-                minutesElement.textContent = "05";
+                minutesElement.textContent = "{{user.config_perfil.time_short_break}}";
                 break;
             case longBreak:
-                minutesElement.textContent = "15";
+                minutesElement.textContent = "{{user.config_perfil.time_long_break}}";
                 break;
         }
         secondsElement.textContent = "00";
@@ -165,7 +212,6 @@
             var seconds = parseInt(secondsElement.textContent);
 
             couting(minutes, seconds, minutesElement, secondsElement);
-            console.log("Entrou")
             await new Promise(r => setTimeout(r, 1000));
         }
 
@@ -203,6 +249,7 @@
 
     function showConfig() {
         document.getElementById("painel-config").hidden = false;
+        document.getElementById("painel-config").scrollIntoView();
     }
 
     function hiddenConfig() {

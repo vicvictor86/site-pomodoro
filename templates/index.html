@@ -10,15 +10,20 @@
 
 <script src="{% static 'js/index.js' %}"></script>
 
-<div class="flex justify-center items-center h-screen w-screen">
+<div class="flex justify-center items-center ">
+    <img class="h-12 mr-2" src="{% static 'images/icon.png' %}" alt="Icone do site">
+    <a id="site-name" href="{% url 'index' %}" class="text-3xl font-bold text-red-900">Pomológio</a>
+</div>
+
+<div class="flex justify-center items-center h-screen w-screen text-2xl">
     <div class="items-start block">
-        <div id="buttons-menu" class="mb-1 flex justify-between">
-            <a href="{% url 'index' %}" class="bg-red-700 text-white font-bold rounded p-1">Pomológio</a>
-            <button onclick="showConfig(); " class="bg-red-700 text-white font-bold rounded p-1">Configurações</button>
-            <a href="{% url 'perfil'%}" class="bg-red-700 text-white font-bold rounded py-1 px-6">Perfil</a>
-            <a href="{% url 'logout'%}" class="bg-red-700 text-white font-bold rounded py-1 px-6">Sair</a>
+        <div id="buttons-menu" class="mb-1 flex justify-between border-b-2 p-1">
+            <a href="{% url 'index' %}" class="bg-red-400 text-white font-bold rounded p-1">Pomológio</a>
+            <button onclick="showConfig(); " class="bg-red-400 text-white font-bold rounded p-1">Configurações</button>
+            <a href="{% url 'perfil'%}" class="bg-red-400 text-white font-bold rounded py-1 px-6">Perfil</a>
+            <a href="{% url 'logout'%}" class="bg-red-400 text-white font-bold rounded py-1 px-6">Sair</a>
         </div>
-        <div id="buttons-pomodoro" class="border-4 px-4 pb-16 pt-4 bg-red-500">
+        <div id="buttons-pomodoro" class="px-4 pb-16 pt-4 bg-red-400 rounded">
             <div class="flex items-start">
                 <button onclick="pomodoroFunc()"
                     class="border-2 mr-2 text-white font-bold rounded p-1">Pomodoro</button>
@@ -28,9 +33,9 @@
                     longo</button>
             </div>
             <div class="flex justify-center items-center">
-                <span id="clock-minutes" class="mt-16 text-6xl text-white font-bold">{{user.config_perfil.time_pomodoro}}</span>
-                <span class="mt-16 text-6xl text-white font-bold">:</span>
-                <span id="clock-seconds" class="mt-16 text-6xl text-white font-bold">00</span>
+                <span id="clock-minutes" class="mt-16 text-8xl text-white font-bold">{{user.config_perfil.time_pomodoro}}</span>
+                <span class="mt-16 text-8xl text-white font-bold">:</span>
+                <span id="clock-seconds" class="mt-16 text-8xl text-white font-bold">00</span>
             </div>
             <div class="flex justify-center items center">
                 <button id="start-button" onclick="disableButton(); startCouting(); enableButton();"
@@ -226,25 +231,43 @@
         document.getElementById('start-button').disabled = false;
     }
 
+    var actualColorButtonMenu = "bg-red-400";
+    function changeButtonsMenuColor(newColor){
+        var buttonsMenu = document.getElementById("buttons-menu").children;
+        for(var i = 0; i < buttonsMenu.length; i++){
+            buttonsMenu[i].className = buttonsMenu[i].className.replace(actualColorButtonMenu, newColor);
+        }
+        actualColorButtonMenu = newColor;
+    }
+
     function pomodoroFunc() {
         isTiking = false;
         activeType = pomodoro
         defineTime();
-        document.getElementById("buttons-pomodoro").className = "border-4 px-4 pb-16 pt-4 bg-red-500";
+        document.getElementById("buttons-pomodoro").className = "px-4 pb-16 pt-4 bg-red-400 rounded";
+        document.getElementById("body").className = "bg-red-500";
+        document.getElementById("site-name").className ="text-3xl font-bold text-red-900";
+        changeButtonsMenuColor("bg-red-400");
     }
 
     function shortBreakFunc() {
         isTiking = false;
         activeType = shortBreak
         defineTime();
-        document.getElementById("buttons-pomodoro").className = "border-4 px-4 pb-16 pt-4 bg-blue-500";
+        document.getElementById("buttons-pomodoro").className = "px-4 pb-16 pt-4 bg-blue-500";
+        document.getElementById("body").className = "bg-blue-600";
+        document.getElementById("site-name").className ="text-3xl font-bold text-blue-800";
+        changeButtonsMenuColor("bg-blue-500");
     }
 
     function longBreakFunc() {
         isTiking = false;
         activeType = longBreak
         defineTime();
-        document.getElementById("buttons-pomodoro").className = "border-4 px-4 pb-16 pt-4 bg-blue-800";
+        document.getElementById("buttons-pomodoro").className = "px-4 pb-16 pt-4 bg-blue-800";
+        document.getElementById("body").className = "bg-blue-900";
+        document.getElementById("site-name").className ="text-3xl font-bold text-blue-800";
+        changeButtonsMenuColor("bg-blue-800");
     }
 
     function showConfig() {

@@ -5,7 +5,7 @@
 <div class="pt-48 pb-48">
     <div class="container px-3 mx-auto flex flex-wrap flex-row items-center">
         <div class="flex md:w-full h-96 justify-center items-center md:text-left ">
-            <form class="flex justify-center items-center h-full rounded border-gray-600 border-8 px-8 py-64" action="{% url 'login' %}" method="POST">
+            <form class="flex justify-center bg-red-400 items-center h-full rounded px-8 py-64" action="{% url 'login' %}" method="POST">
                 {% csrf_token %}
 
                 <div class="row">
@@ -19,20 +19,20 @@
                     <div class="row">
                         <div class="col-12 col-lg-12">
                             <label class="text-gray-800" for="email">Email:</label>
-                            <input type="text" id="email" class="w-full border-b-2" name="email"
+                            <input type="text" id="email" class="w-full bg-gray-200 rounded" name="email"
                                 placeholder="Entre com o email cadastrado">
                         </div>
                         <div class="col-12 col-lg-12">
                             <label class="text-gray-800" for="password_user">Senha:</label>
-                            <input id="senha" type="password" class="w-full border-b-2" name="password_user"
+                            <input id="senha" type="password" class="w-full bg-gray-200 rounded" name="password_user"
                                 placeholder="Digite aqui sua senha">
                         </div>
                         <div class="flex justify-center items-center mt-8">
-                            <button class="bg-gray-800 flex justify-center align-items text-white rounded-md p-4" type="submit">Acessar sua conta</button>
+                            <button class="bg-red-700 flex justify-center align-items text-white rounded-md p-4" type="submit">Acessar sua conta</button>
                         </div>
                         <div class="mt-8 text-center">
                             <span>Ainda não tem conta?</span>
-                            <button type="button" class="text-blue-700" onclick="exibirCriarConta()">Clique aqui</button>
+                            <button type="button" class="text-red-800" onclick="exibirCriarConta()">Clique aqui</button>
                         </div>
                         <div class="mt-6">
                             {% include 'partials/_alerts.html' %}

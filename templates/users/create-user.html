@@ -5,7 +5,7 @@
 <div class="pt-48 pb-48">
     <div class="container px-3 mx-auto flex flex-wrap flex-row items-center">
         <div class="flex md:w-full h-96 justify-center items-center md:text-left ">
-            <form class="flex justify-center items-center h-full rounded border-gray-600 border-8 px-8 py-64" action="{% url 'create_user' %}" method="POST">
+            <form class="flex justify-center items-center h-full bg-red-400 rounded px-8 py-64" action="{% url 'create_user' %}" method="POST">
                 {% csrf_token %}
                 <div class="row">
 
@@ -16,31 +16,35 @@
                     <div class="flex justify-center items-center m-4">
                         <img class="h-10" src="{% static 'images/icon.png' %}" alt="Icone do site">
                     </div>
-                    <div class="w-full border-b-2">
-                        <label class="text-gray-800" for="name">Nome completo:</label>
-                        <input type="text" class="w-72" name="name" placeholder="Ex.:Guilherme Lima" required>
+                    <div class="mb-2 flex">
+                        <label class="text-gray-800" for="name">Nome:</label>
+                        <div class="flex w-full">
+                            <input type="text" class="w-full bg-gray-200 rounded " name="name" placeholder="Ex.:Guilherme Lima" required>
+                        </div>
                     </div>
-                    <div class="w-full border-b-2">
+                    <div class="mb-2 flex">
                         <label class="text-gray-800" for="email">Email:</label>
-                        <input type="email" class="w-72" name="email" placeholder="Ex.: victor@outlook.com"
-                            required>
+                        <div class="flex w-full">
+                            <input type="email" class="w-full bg-gray-200 rounded ml-1" name="email" placeholder="Ex.: victor@outlook.com" required>               
+                        </div>
                     </div>
-                    <div class="w-full border-b-2">
+                    <div class="mb-2 flex">
                         <label class="text-gray-800" for="password">Senha:</label>
-                        <input  type="password" class="w-72" name="password" placeholder="Digite sua senha"
-                            required>
+                        <div class="w-full">
+                            <input type="password" class="w-full bg-gray-200 rounded" name="password" placeholder="Digite sua senha" required>
+                        </div>
                     </div>
-                    <div class="w-full border-b-2">
+                    <div class="w-full mb-2">
                         <label class="text-gray-800" for="password2">Confirmação de senha:</label>
-                        <input  type="password" class="w-64" name="password2"
+                        <input  type="password" class="w-64 bg-gray-200 rounded" name="password2"
                             placeholder="Mais uma vez" required>
                     </div>
                     <div class="text-gray-800 flex justify-center align-items mt-8">
-                        <button class="bg-gray-800 flex justify-center align-items text-white rounded-md p-4" type="submit">Crie sua conta</button>
+                        <button class="bg-red-700 flex justify-center align-items text-white rounded-md p-4" type="submit">Crie sua conta</button>
                     </div>
                     <div class="mt-8 text-center">
                         <span>Já tem conta?</span>
-                        <button type="button" class="text-blue-700" onclick="exibirCriarConta()">Clique aqui</button>
+                        <button type="button" class="text-red-900" onclick="exibirCriarConta()">Clique aqui</button>
                     </div>
                     <div class="mt-6">
                         {% include 'partials/_alerts.html' %}

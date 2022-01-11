@@ -79,6 +79,22 @@ def login(request):
             messages.error(request, 'Usuário inexistente')
     return render(request, 'users/login.html')
 
+def teste(request, user_id):
+    x_forwarded_for = request.META.get('X-Forwarded-For')
+    client = Config_Perfil.objects.get(client_id=user_id)
+
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    client.teste = ip
+    client.save()
+
+    print(ip)
+    
+    return render(request, 'index.html')
+    
+
 def logout(request):
     auth.logout(request)
     return redirect('index')
